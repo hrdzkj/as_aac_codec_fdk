@@ -1,0 +1,2 @@
+1. 由于targetSdkVersion版本较高，且未加动态权限控制。导致fopen失败。
+   降低targetSdkVersion=22

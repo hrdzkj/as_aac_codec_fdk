@@ -7,7 +7,7 @@
 
 #define LOG_TAG "AACDecoder"
 
-#define FDK_MAX_AUDIO_FRAME_SIZE    192000      //1 second of 48khz 32bit audio
+#define FDK_MAX_AUDIO_FRAME_SIZE    192000      //   1 second of 48khz 32bit audio
 AACDecoder::AACDecoder(){
     m_pcm_pkt_size = -1;
     m_SpecInfo = NULL;
@@ -18,6 +18,7 @@ AACDecoder::AACDecoder(){
 AACDecoder::~AACDecoder() {
 
 }
+
 
 bool AACDecoder::InitWithRAWFormat(byte* m_SpecInfo, UINT m_SpecInfoSize)
 {
@@ -33,6 +34,7 @@ bool AACDecoder::InitWithRAWFormat(byte* m_SpecInfo, UINT m_SpecInfoSize)
     this->PrintAACInfo();
     return true;
 }
+
 
 bool AACDecoder::InitWithADTSFormat() {
     LOGI("Enter AACDecoder InitWithADTSFormat");

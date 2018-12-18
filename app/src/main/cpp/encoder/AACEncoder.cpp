@@ -81,9 +81,11 @@ bool AACEncoder::Init(AACProfile profile, int sampleRate, int channels, int bitR
         LOGI("Unable to get the encoder info\n");
         return false;
     }
+
+    //注意：每次送入encoder的数据量大小的问题，这个大小在encoder初始化后是固定的。计算方法如下，每次送入aacEncEncode的数据量必须是m_inputSizeFixed
     m_inputSizeFixed = channels * 2 * m_EncInfo.frameLength; //frameLength是每帧每个channel的采样点数
     m_inBufferCursor = 0;
-    m_inBuffer = new uint8_t[m_inputSizeFixed];
+    m_inBuffer = new uint8_t[m_inputSizeFixed];//所以从音频采集到送入aacEncEncode之间需要做一个缓冲
     memset(m_inBuffer, 0, m_inputSizeFixed);
     //如果是编码裸流，可以取出编码器的SpecInfo来
     byte * audioSpecInfo = m_EncInfo.confBuf;
@@ -101,12 +103,13 @@ int AACEncoder::Encode(byte* pData, int dataByteSize, byte** packetBuffer) {
     int packetSize = 0;
     while (dataByteSize > 0) {
         int cpySize = 0;
-        if(m_inBufferCursor + dataByteSize >= m_inputSizeFixed) {
+        if(m_inBufferCursor + dataByteSize >= m_inputSizeFixed) { //缓冲放不下全部pcm数据
             cpySize = m_inputSizeFixed - m_inBufferCursor;
             memcpy(m_inBuffer + m_inBufferCursor, pData + pDataCursor, cpySize);
             int aacPktSize = this->fdkEncodeAudio();
             if(aacPktSize > 0) {
-                this->writeAACPakcetToFile(m_aacOutbuf, aacPktSize);// 写一个AAC文件
+                //一个AAC原始数据块长度是可变的，对原始帧加上ADTS头进行ADTS的封装，就形成了ADTS帧。
+                this->writeAACPakcetToFile(m_aacOutbuf, aacPktSize);// 写一个有ADTS头的AAC文件
                 memcpy(*packetBuffer + packetSize, m_aacOutbuf, aacPktSize);
                 packetSize += aacPktSize;
             }
@@ -122,10 +125,12 @@ int AACEncoder::Encode(byte* pData, int dataByteSize, byte** packetBuffer) {
     }
     return packetSize;
 }
+
+// 头部格式解释请看 https://www.cnblogs.com/lihaiping/p/5284547.html
 void AACEncoder::addADTStoPacket(uint8_t* packet, int packetLen) {
     int profile = 1;//5;//0 : LC; 5 : HE-AAC; 29: HEV2
-    int freqIdx = 3; // 48KHz
-    int chanCfg = 2; // Mono
+    int freqIdx = 8; // 3---48KHz  8---16000 Hz
+    int chanCfg = 1; // 表示声道数
 
     PutBitContext pb;
     init_put_bits(&pb, packet, ADTS_HEADER_SIZE);

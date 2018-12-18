@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private final String ENCODE_PCM_FILE_PATH = "/mnt/sdcard/a_songstudio/encode_pcm.pcm";
     private final String ENCODE_MONO_PCM_FILE_PATH = "/mnt/sdcard/a_songstudio/encode_mono_pcm.pcm";
     private final String ENCODE_AAC_FILE_PATH = "/mnt/sdcard/a_songstudio/encode_lc_aac.aac";
-//    private final String DECODE_AAC_FILE_PATH = "/mnt/sdcard/a_songstudio/decode_aac.aac";
+
+    //
     private final String DECODE_AAC_FILE_PATH = "/mnt/sdcard/a_songstudio/test.aac";
     private final String DECODE_PCM_FILE_PATH = "/mnt/sdcard/a_songstudio/decode_pcm.pcm";
     @Override

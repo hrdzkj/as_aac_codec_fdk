@@ -24,6 +24,14 @@ private:
 public:
     AACDecoder();
     ~AACDecoder();
+
+/***
+ * https://blog.csdn.net/carryinfo/article/details/54375611?utm_source=blogxgwz1
+ * decoder主要有两种模式， RAW和ADTS
+ * RAW模式： 需要在初始化decoder的时候传入AudioSpecInfo，表明即将送入的rawdata的samplerate, channel等;
+ * 送数据的时候把ADTS头去掉
+ ***/
+
     /**
      * 如果使用raw模式，一定要每次传递进来一个完整独立的ES包
      */

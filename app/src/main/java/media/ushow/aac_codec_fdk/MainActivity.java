@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Button aacEncodeBtn;
     private Button aacDecodeBtn;
 
+    // 目前网上找到的pcm文件来源 http://ai.baidu.com/docs#/ASR-API/top
     private final String ENCODE_PCM_FILE_PATH = "/mnt/sdcard/a_songstudio/encode_pcm.pcm";
     private final String ENCODE_MONO_PCM_FILE_PATH = "/mnt/sdcard/a_songstudio/encode_mono_pcm.pcm";
     private final String ENCODE_AAC_FILE_PATH = "/mnt/sdcard/a_songstudio/encode_lc_aac.aac";

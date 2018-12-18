@@ -106,7 +106,7 @@ int AACEncoder::Encode(byte* pData, int dataByteSize, byte** packetBuffer) {
             memcpy(m_inBuffer + m_inBufferCursor, pData + pDataCursor, cpySize);
             int aacPktSize = this->fdkEncodeAudio();
             if(aacPktSize > 0) {
-                this->writeAACPakcetToFile(m_aacOutbuf, aacPktSize);
+                this->writeAACPakcetToFile(m_aacOutbuf, aacPktSize);// 写一个AAC文件
                 memcpy(*packetBuffer + packetSize, m_aacOutbuf, aacPktSize);
                 packetSize += aacPktSize;
             }

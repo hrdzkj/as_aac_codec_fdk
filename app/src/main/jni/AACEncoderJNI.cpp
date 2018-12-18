@@ -21,17 +21,18 @@ JNIEXPORT jint JNICALL Java_media_ushow_aac_1codec_1fdk_AACEncoder_encode(JNIEnv
     if(pcmFile) {
         AACEncoder* encoder = new AACEncoder();
         AACProfile profile = LC_AAC;
-        int sampleRate = 48000;
+        int sampleRate = 16000;//48000;
         int channels = 1;
-        int bitRate = 32 * 1024;
+        int bitRate = 16000*1*16;//32 * 1024;
         if(encoder->Init(profile, sampleRate, channels, bitRate)) {
             while (true) {
                 int size = 1024;
-                uint16_t * buffer = new uint16_t[size];
+                uint16_t * buffer = new uint16_t[size]; // 待编码的pcm数据
                 int actualSize = fread(buffer, sizeof(uint16_t), size, pcmFile);
                 if(actualSize > 0) {
                     byte* packetBuffer = NULL;
                     int packetBufferSize = encoder->Encode((byte*)buffer, size * sizeof(uint16_t), &packetBuffer);
+                    LOGI("get encode packet size is %d", packetBufferSize);
                     if(packetBufferSize > 0) {
                         packetCnt++;
                         fwrite(packetBuffer, sizeof(byte), packetBufferSize, aacFile);
